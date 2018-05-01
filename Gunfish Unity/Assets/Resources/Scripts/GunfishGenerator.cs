@@ -42,16 +42,16 @@ public class GunfishGenerator : MonoBehaviour {
 
 			sr.sprite = sprites [i];
 
-//			int slicePixelHeight = 0;
-//			//print (spriteSheet.height);
-//			int x = (spriteSheet.width / numOfDivisions * i) + spriteSheet.width / numOfDivisions / 2;
-//			Color[] pixels = spriteSheet.GetPixels (x, 0, 1, spriteSheet.height);
-//
-//			foreach (Color pixel in pixels) {
-//				if (pixel.a != 0) {
-//					slicePixelHeight++;
-//				}
-//			}
+			int slicePixelHeight = 0;
+			//print (spriteSheet.height);
+			int x = (spriteSheet.width / numOfDivisions * i) + spriteSheet.width / numOfDivisions / 2;
+			Color[] pixels = spriteSheet.GetPixels (x, 0, 1, spriteSheet.height);
+
+			foreach (Color pixel in pixels) {
+				if (pixel.a != 0) {
+					slicePixelHeight++;
+				}
+			}
 			//print ("Pixel Height: " + slicePixelHeight + "\tHeight: " + spriteSheet.height +"\tRatio: " + (float)slicePixelHeight / spriteSheet.height);
 
 			BoxCollider2D col;
@@ -60,7 +60,8 @@ public class GunfishGenerator : MonoBehaviour {
 			} else {
 				col = fishPieces [i].AddComponent<BoxCollider2D> ();
 			}
-			//col.size = new Vector2 (col.size.x * 1.5f, col.size.y * slicePixelHeight / spriteSheet.height * 1.5f);
+			float ySize = Mathf.Min (col.size.y * slicePixelHeight / spriteSheet.height * 2, spriteSheet.height / sprites [0].pixelsPerUnit);
+			col.size = new Vector2 (col.size.x * 1.5f, ySize);
 
 			Rigidbody2D rb;
 			if (fishPieces [i].GetComponent<Rigidbody2D> ()) {
