@@ -143,6 +143,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteSheet: {fileID: 2800000, guid: b5dad432fc8134aae9c58df7e57ab3c6, type: 3}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
   weight: 5
 --- !u!212 &23683514
 SpriteRenderer:
@@ -218,7 +221,7 @@ MonoBehaviour:
     m_Bits: 1
   angleFromHorizontal: 30
   force: 2000
-  gunForce: 1500
+  gunForce: 3000
   shootPoint: {fileID: 598385273}
   grounded: 0
 --- !u!1 &94520964
@@ -657,7 +660,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 598385273}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: ShootPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1464,7 +1467,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1437932926}
   - component: {fileID: 1437932927}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: GunPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

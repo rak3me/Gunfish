@@ -5,7 +5,9 @@ using UnityEngine;
 public class GunfishGenerator : MonoBehaviour {
 
 	public Texture2D spriteSheet;
+	public LayerMask playerLayer;
 	public float weight = 10f;
+
 	private Sprite[] sprites;
 	private GameObject[] fishPieces;
 
@@ -29,7 +31,6 @@ public class GunfishGenerator : MonoBehaviour {
 
 		for (int i = 0; i < sprites.Length; i++) {
 			//fishPieces [i].layer = 8;
-
 			SpriteRenderer sr;
 			if (i == 0) {
 				sr = GetComponent<SpriteRenderer> ();
@@ -37,6 +38,7 @@ public class GunfishGenerator : MonoBehaviour {
 				fishPieces [i] = new GameObject ("Fish[" + i.ToString () + "]");
 				sr = fishPieces [i].AddComponent<SpriteRenderer> ();
 			}
+			fishPieces[i].layer = LayerMask.NameToLayer("Player");
 
 			sr.sprite = sprites [i];
 

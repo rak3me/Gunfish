@@ -24,12 +24,15 @@ public class Gunfish2D : MonoBehaviour {
 
 	private Rigidbody2D rb;
 
+	private float groundCheckDistance;
+
 
 	// Use this for initialization
 	void Start () {
 		tail = transform.GetChild (transform.childCount-1);
 		currentCD = 0f;
 		grounded = false;
+		groundCheckDistance = transform.localScale.y;
 		rb = GetComponent<Rigidbody2D> ();
 
 		hor = Mathf.Cos (angleFromHorizontal * Mathf.Deg2Rad);
@@ -43,10 +46,16 @@ public class Gunfish2D : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		if (Physics2D.Raycast (transform.position, Vector2.down, 0.7f, groundLayer)) {
-			grounded = true;
-		} else {
-			grounded = false;
+//		if (Physics2D.Raycast (transform.position, Vector2.down, transform.localScale.y, groundLayer)) {
+//			grounded = true;
+//		} else {
+//			grounded = false;
+//		}
+		grounded = false;
+		foreach (Transform child in transform) {
+			if (Physics2D.Raycast (child.position, Vector2.down, groundCheckDistance, groundLayer)) {	
+				grounded = true;
+			}
 		}
 	}
 
