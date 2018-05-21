@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-[RequireComponent(typeof(Rigidbody2D))]
-public class Gunfish2D : MonoBehaviour {
+public class Gunfish2D : NetworkBehaviour {
 
 	public LayerMask groundLayer;
 	public float angleFromHorizontal = 30f;
@@ -83,6 +83,10 @@ public class Gunfish2D : MonoBehaviour {
 	}
 
 	void Update () {
+		if (!hasAuthority) {
+			return;
+		}
+
 		float input = Input.GetAxisRaw ("Horizontal");
 		 
 		if (jumpCD) {

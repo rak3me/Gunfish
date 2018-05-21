@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 [RequireComponent(typeof(LineRenderer))]
-public class GunfishGenerator : MonoBehaviour {
+public class GunfishGenerator : NetworkBehaviour {
 
 	public Texture2D spriteSheet;
 	public LayerMask playerLayer;
@@ -59,14 +60,14 @@ public class GunfishGenerator : MonoBehaviour {
 
 			sr.sprite = sprites [i];
 
-			int slicePixelHeight = 0;
+			//int slicePixelHeight = 0;
 			//print (spriteSheet.height);
 			int x = (spriteSheet.width / numOfDivisions * i) + spriteSheet.width / numOfDivisions / 2;
 			Color[] pixels = spriteSheet.GetPixels (x, 0, 1, spriteSheet.height);
 
 			int sliceStartPixel = 0;
 			int sliceEndPixel = pixels.Length - 1;
-			int sliceMidPoint = pixels.Length / 2;
+			//int sliceMidPoint = pixels.Length / 2;
 
 //			foreach (Color pixel in pixels) {
 //				if (pixel.a != 0) {
@@ -125,6 +126,22 @@ public class GunfishGenerator : MonoBehaviour {
 				//fishPieces [i].transform.localScale = new Vector3 (1.5f, 1f, 1f);
 			}
 			Destroy (sr);
+
+
+			//Network Handling
+			/******************************************************/
+			if (i == 0) {
+				continue;
+			}
+
+			//print (gameObject.name);
+			gameObject.SetActive(false);
+			NetworkTransformChild ntc = this.gameObject.AddComponent<NetworkTransformChild>();
+			ntc.enabled = true;
+			ntc.sendInterval = 20;
+			ntc.syncRotationAxis = NetworkTransform.AxisSyncMode.AxisZ;
+			ntc.target = fishPieces [i].transform;
+			gameObject.SetActive(true);
 		}
 	}
 	
