@@ -32,7 +32,7 @@ public class Gunfish2D : MonoBehaviour {
 		tail = transform.GetChild (transform.childCount-1);
 		currentCD = 0f;
 		grounded = false;
-		groundCheckDistance = transform.localScale.y;
+		groundCheckDistance = transform.localScale.y * 1.5f;
 		rb = GetComponent<Rigidbody2D> ();
 
 		hor = Mathf.Cos (angleFromHorizontal * Mathf.Deg2Rad);
