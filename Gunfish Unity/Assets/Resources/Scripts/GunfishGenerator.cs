@@ -15,6 +15,8 @@ public class GunfishGenerator : MonoBehaviour {
 	private int numOfDivisions;
 	private float spacing;
 
+    public LineRenderer lineFish;
+
 	// Use this for initialization
 	void Awake () {
 		sprites = Resources.LoadAll<Sprite> (spriteSheet.name);
@@ -29,6 +31,10 @@ public class GunfishGenerator : MonoBehaviour {
 
 		float pieceWeight = weight / numOfDivisions;
 
+        lineFish.positionCount = sprites.Length;
+        lineFish.startWidth = 1.8f;
+        lineFish.endWidth = 1.8f;
+
 		for (int i = 0; i < sprites.Length; i++) {
 			//fishPieces [i].layer = 8;
 			SpriteRenderer sr;
@@ -38,7 +44,15 @@ public class GunfishGenerator : MonoBehaviour {
 				fishPieces [i] = new GameObject ("Fish[" + i.ToString () + "]");
 				sr = fishPieces [i].AddComponent<SpriteRenderer> ();
 			}
-			fishPieces[i].layer = LayerMask.NameToLayer("Player");
+
+            sr.enabled = false;
+
+
+            LineSegment segment = fishPieces[i].AddComponent<LineSegment>();
+            segment.segment = lineFish;
+            segment.index = i;
+
+            fishPieces[i].layer = LayerMask.NameToLayer("Player");
 
 			sr.sprite = sprites [i];
 
@@ -60,7 +74,7 @@ public class GunfishGenerator : MonoBehaviour {
 			} else {
 				col = fishPieces [i].AddComponent<BoxCollider2D> ();
 			}
-			float ySize = Mathf.Min (col.size.y * slicePixelHeight / spriteSheet.height * 2, spriteSheet.height / sprites [0].pixelsPerUnit);
+			float ySize = Mathf.Min (col.size.y * slicePixelHeight / spriteSheet.height * 1.5f, spriteSheet.height / sprites [0].pixelsPerUnit);
 			col.size = new Vector2 (col.size.x * 1.5f, ySize);
 
 			Rigidbody2D rb;
@@ -85,25 +99,6 @@ public class GunfishGenerator : MonoBehaviour {
 				fishPieces [i].transform.SetParent (transform);
 				//fishPieces [i].transform.localScale = new Vector3 (1.5f, 1f, 1f);
 			}
-		}
-		//now that the fish is all nice and generated, replace all but the end segments' SpriteRenderer components
-		//with a child GameObject containing only a SpriteRenderer of the same sprite and a StretchMySprite script.
-		//This is done instead of adding the StretchMySprite script directly to the pieces so that the sprite can be stretched without affecting the colliders
-		for (int i = 1; i < sprites.Length - 1; i++) {
-			//make sprite object
-				GameObject pieceSprite = new GameObject ("FishSprite[" + i.ToString () + "]");
-				SpriteRenderer sr = pieceSprite.AddComponent<SpriteRenderer> ();
-				sr.sprite = fishPieces [i].GetComponent<SpriteRenderer>().sprite;
-			//disable current fish piece sprite
-				fishPieces [i].GetComponent<SpriteRenderer> ().enabled = false;
-			//put the sprite object where the fish piece was
-				pieceSprite.transform.position = transform.position + Vector3.right * spacing * i;
-			//make it a child of fish piece
-				pieceSprite.transform.SetParent (fishPieces [i].transform);
-			//attach Stretch script and references
-				StretchMySprite stretchArmstrong = pieceSprite.AddComponent<StretchMySprite> ();
-				stretchArmstrong.backSegment = fishPieces [i - 1].transform;
-				stretchArmstrong.forwardSegment = fishPieces [i + 1].transform;
 		}
 	}
 	
