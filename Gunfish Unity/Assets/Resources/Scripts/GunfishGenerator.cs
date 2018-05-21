@@ -12,7 +12,7 @@ public class GunfishGenerator : MonoBehaviour {
 	private Sprite[] sprites;
 	private GameObject[] fishPieces;
 
-	private float fishLength;
+	private float fishLength, fishHeight;
 	private int numOfDivisions;
 	private float spacing;
 
@@ -23,6 +23,7 @@ public class GunfishGenerator : MonoBehaviour {
 		sprites = Resources.LoadAll<Sprite> (spriteSheet.name);
 		numOfDivisions = sprites.Length;
 		fishLength = spriteSheet.width / sprites [0].pixelsPerUnit;
+		fishHeight = spriteSheet.height / sprites [0].pixelsPerUnit;
 		fishPieces = new GameObject[numOfDivisions];
 		spacing = fishLength / numOfDivisions;
 		GetComponent<SpriteRenderer> ().sprite = sprites [0];
@@ -36,8 +37,8 @@ public class GunfishGenerator : MonoBehaviour {
 		lineFish = GetComponent<LineRenderer> ();
 
         lineFish.positionCount = sprites.Length;
-        lineFish.startWidth = 1.8f;
-        lineFish.endWidth = 1.8f;
+        lineFish.startWidth = fishHeight;
+		lineFish.endWidth = fishHeight;
 		lineFish.alignment = LineAlignment.Local;
 
 		for (int i = 0; i < sprites.Length; i++) {

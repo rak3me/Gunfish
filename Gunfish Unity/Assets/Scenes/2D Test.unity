@@ -143,7 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cb4da493f36041f4bed0a4a2196aa8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteSheet: {fileID: 2800000, guid: b5dad432fc8134aae9c58df7e57ab3c6, type: 3}
+  spriteSheet: {fileID: 2800000, guid: e065cec9f5bce41c8b821ea5be463fd9, type: 3}
   playerLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -239,7 +239,7 @@ LineRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0590c275261af4226abfb014bdce1f4b, type: 2}
+  - {fileID: 2100000, guid: 8b7c317abec51490298fb9a84ada8864, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
