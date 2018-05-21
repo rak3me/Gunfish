@@ -86,6 +86,25 @@ public class GunfishGenerator : MonoBehaviour {
 				//fishPieces [i].transform.localScale = new Vector3 (1.5f, 1f, 1f);
 			}
 		}
+		//now that the fish is all nice and generated, replace all but the end segments' SpriteRenderer components
+		//with a child GameObject containing only a SpriteRenderer of the same sprite and a StretchMySprite script.
+		//This is done instead of adding the StretchMySprite script directly to the pieces so that the sprite can be stretched without affecting the colliders
+		for (int i = 1; i < sprites.Length - 1; i++) {
+			//make sprite object
+				GameObject pieceSprite = new GameObject ("FishSprite[" + i.ToString () + "]");
+				SpriteRenderer sr = pieceSprite.AddComponent<SpriteRenderer> ();
+				sr.sprite = fishPieces [i].GetComponent<SpriteRenderer>().sprite;
+			//disable current fish piece sprite
+				fishPieces [i].GetComponent<SpriteRenderer> ().enabled = false;
+			//put the sprite object where the fish piece was
+				pieceSprite.transform.position = transform.position + Vector3.right * spacing * i;
+			//make it a child of fish piece
+				pieceSprite.transform.SetParent (fishPieces [i].transform);
+			//attach Stretch script and references
+				StretchMySprite stretchArmstrong = pieceSprite.AddComponent<StretchMySprite> ();
+				stretchArmstrong.backSegment = fishPieces [i - 1].transform;
+				stretchArmstrong.forwardSegment = fishPieces [i + 1].transform;
+		}
 	}
 	
 	// Update is called once per frame
