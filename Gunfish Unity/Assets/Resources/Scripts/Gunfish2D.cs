@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class Gunfish2D : MonoBehaviour {
 
 	public LayerMask groundLayer;
@@ -74,6 +75,7 @@ public class Gunfish2D : MonoBehaviour {
 
 		if (grounded && !groundedLF) {
 			flopAudioSource.clip = flopSounds[Random.Range(0, flopSounds.Length)];
+			flopAudioSource.volume = Mathf.Min (-rb.velocity.y / 100, 1f);
 			flopAudioSource.Play ();
 		}
 
