@@ -143,7 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cb4da493f36041f4bed0a4a2196aa8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteSheet: {fileID: 2800000, guid: e065cec9f5bce41c8b821ea5be463fd9, type: 3}
+  spriteSheet: {fileID: 2800000, guid: 6d627f80329cf46d7bfe4d99bfc4ff1d, type: 3}
   playerLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -225,6 +225,11 @@ MonoBehaviour:
   gunForce: 3000
   shootPoint: {fileID: 598385273}
   grounded: 0
+  gunSound: {fileID: 8300000, guid: 7767a07f3564c45ba8b131ad48b2fcd1, type: 3}
+  flopSounds:
+  - {fileID: 8300000, guid: 0df79998d204e49e8877f1ed9885d17a, type: 3}
+  - {fileID: 8300000, guid: 5d93c70c992e64541a8ae9ed0ef66c0e, type: 3}
+  - {fileID: 8300000, guid: 7ed082938e537477bb4b5931eea698c7, type: 3}
 --- !u!120 &23683517
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -239,7 +244,7 @@ LineRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8b7c317abec51490298fb9a84ada8864, type: 2}
+  - {fileID: 2100000, guid: bfc0acc1b27224eeaa431834dd46f108, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1483,6 +1488,8 @@ MonoBehaviour:
   gunForce: 5000
   shootPoint: {fileID: 1547796351}
   grounded: 1
+  gunSound: {fileID: 0}
+  flopSounds: []
 --- !u!50 &1373534843
 Rigidbody2D:
   serializedVersion: 4
@@ -2972,6 +2979,8 @@ MonoBehaviour:
   gunForce: 5000
   shootPoint: {fileID: 1464500092}
   grounded: 0
+  gunSound: {fileID: 0}
+  flopSounds: []
 --- !u!212 &1891436551
 SpriteRenderer:
   m_ObjectHideFlags: 0

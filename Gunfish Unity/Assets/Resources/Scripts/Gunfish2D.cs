@@ -13,6 +13,12 @@ public class Gunfish2D : MonoBehaviour {
 	private Transform tail;
 	[SerializeField] private Transform shootPoint;
 	[SerializeField] private bool grounded;
+	private bool groundedLF;
+	[SerializeField] private AudioClip gunSound;
+	[SerializeField] private AudioClip[] flopSounds;
+
+	private AudioSource gunAudioSource;
+	private AudioSource flopAudioSource;
 
 	private bool jumpCD;
 	private float currentCD = 0f;
@@ -29,10 +35,18 @@ public class Gunfish2D : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		gunAudioSource = gameObject.AddComponent<AudioSource> ();
+		gunAudioSource.clip = gunSound;
+		gunAudioSource.volume = 0.25f;
+
+		flopAudioSource = gameObject.AddComponent<AudioSource> ();
+		flopAudioSource.clip = flopSounds[Random.Range(0, flopSounds.Length)];
+		flopAudioSource.volume = 0.75f;
+
 		tail = transform.GetChild (transform.childCount-1);
 		currentCD = 0f;
 		grounded = false;
-		groundCheckDistance = transform.localScale.y * 1.5f;
+		groundCheckDistance = GetComponent<BoxCollider2D>().bounds.size.y * 1.2f;
 		rb = GetComponent<Rigidbody2D> ();
 
 		hor = Mathf.Cos (angleFromHorizontal * Mathf.Deg2Rad);
@@ -57,6 +71,13 @@ public class Gunfish2D : MonoBehaviour {
 				grounded = true;
 			}
 		}
+
+		if (grounded && !groundedLF) {
+			flopAudioSource.clip = flopSounds[Random.Range(0, flopSounds.Length)];
+			flopAudioSource.Play ();
+		}
+
+		groundedLF = grounded;
 	}
 
 	void Update () {
@@ -93,7 +114,7 @@ public class Gunfish2D : MonoBehaviour {
 	}
 
 	void Shoot () {
-//		print ("BOOM");
+		gunAudioSource.Play ();
 		rb.AddForceAtPosition ((shootPoint.parent.position - shootPoint.position).normalized * gunForce, shootPoint.position);
 	}
 }

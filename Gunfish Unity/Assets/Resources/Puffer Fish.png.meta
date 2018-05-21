@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: e065cec9f5bce41c8b821ea5be463fd9
-timeCreated: 1526927346
+timeCreated: 1526927542
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -24,6 +24,16 @@ TextureImporter:
     21300034: Puffer Fish_17
     21300036: Puffer Fish_18
     21300038: Puffer Fish_19
+    21300040: Puffer Fish_20
+    21300042: Puffer Fish_21
+    21300044: Puffer Fish_22
+    21300046: Puffer Fish_23
+    21300048: Puffer Fish_24
+    21300050: Puffer Fish_25
+    21300052: Puffer Fish_26
+    21300054: Puffer Fish_27
+    21300056: Puffer Fish_28
+    21300058: Puffer Fish_29
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -125,7 +135,7 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 21.25
+        width: 14.166667
         height: 351
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -137,9 +147,9 @@ TextureImporter:
       name: Puffer Fish_1
       rect:
         serializedVersion: 2
-        x: 21
+        x: 14
         y: 0
-        width: 21.25
+        width: 14.166667
         height: 351
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -151,9 +161,9 @@ TextureImporter:
       name: Puffer Fish_2
       rect:
         serializedVersion: 2
-        x: 42
+        x: 28
         y: 0
-        width: 21.25
+        width: 14.166667
         height: 351
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -165,9 +175,9 @@ TextureImporter:
       name: Puffer Fish_3
       rect:
         serializedVersion: 2
-        x: 63
+        x: 42
         y: 0
-        width: 21.25
+        width: 14.166667
         height: 351
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -179,9 +189,9 @@ TextureImporter:
       name: Puffer Fish_4
       rect:
         serializedVersion: 2
-        x: 84
+        x: 56
         y: 0
-        width: 21.25
+        width: 14.166667
         height: 351
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -193,9 +203,9 @@ TextureImporter:
       name: Puffer Fish_5
       rect:
         serializedVersion: 2
-        x: 105
+        x: 70
         y: 0
-        width: 21.25
+        width: 14.166667
         height: 351
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -207,9 +217,9 @@ TextureImporter:
       name: Puffer Fish_6
       rect:
         serializedVersion: 2
-        x: 126
+        x: 84
         y: 0
-        width: 21.25
+        width: 14.166667
         height: 351
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -221,9 +231,9 @@ TextureImporter:
       name: Puffer Fish_7
       rect:
         serializedVersion: 2
-        x: 147
+        x: 98
         y: 0
-        width: 21.25
+        width: 14.166667
         height: 351
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -235,9 +245,9 @@ TextureImporter:
       name: Puffer Fish_8
       rect:
         serializedVersion: 2
-        x: 168
+        x: 112
         y: 0
-        width: 21.25
+        width: 14.166667
         height: 351
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -249,9 +259,9 @@ TextureImporter:
       name: Puffer Fish_9
       rect:
         serializedVersion: 2
-        x: 189
+        x: 126
         y: 0
-        width: 21.25
+        width: 14.166667
         height: 351
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -263,9 +273,9 @@ TextureImporter:
       name: Puffer Fish_10
       rect:
         serializedVersion: 2
-        x: 210
+        x: 140
         y: 0
-        width: 21.25
+        width: 14.166667
         height: 351
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -277,9 +287,9 @@ TextureImporter:
       name: Puffer Fish_11
       rect:
         serializedVersion: 2
-        x: 231
+        x: 154
         y: 0
-        width: 21.25
+        width: 14.166667
         height: 351
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -291,9 +301,9 @@ TextureImporter:
       name: Puffer Fish_12
       rect:
         serializedVersion: 2
-        x: 252
+        x: 168
         y: 0
-        width: 21.25
+        width: 14.166667
         height: 351
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -305,9 +315,9 @@ TextureImporter:
       name: Puffer Fish_13
       rect:
         serializedVersion: 2
-        x: 273
+        x: 182
         y: 0
-        width: 21.25
+        width: 14.166667
         height: 351
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -319,9 +329,9 @@ TextureImporter:
       name: Puffer Fish_14
       rect:
         serializedVersion: 2
-        x: 294
+        x: 196
         y: 0
-        width: 21.25
+        width: 14.166667
         height: 351
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -333,9 +343,9 @@ TextureImporter:
       name: Puffer Fish_15
       rect:
         serializedVersion: 2
-        x: 315
+        x: 210
         y: 0
-        width: 21.25
+        width: 14.166667
         height: 351
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -347,9 +357,9 @@ TextureImporter:
       name: Puffer Fish_16
       rect:
         serializedVersion: 2
-        x: 336
+        x: 224
         y: 0
-        width: 21.25
+        width: 14.166667
         height: 351
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -361,9 +371,9 @@ TextureImporter:
       name: Puffer Fish_17
       rect:
         serializedVersion: 2
-        x: 357
+        x: 238
         y: 0
-        width: 21.25
+        width: 14.166667
         height: 351
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -375,9 +385,9 @@ TextureImporter:
       name: Puffer Fish_18
       rect:
         serializedVersion: 2
-        x: 378
+        x: 252
         y: 0
-        width: 21.25
+        width: 14.166667
         height: 351
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -389,9 +399,149 @@ TextureImporter:
       name: Puffer Fish_19
       rect:
         serializedVersion: 2
-        x: 399
+        x: 266
         y: 0
-        width: 21.25
+        width: 14.166667
+        height: 351
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Puffer Fish_20
+      rect:
+        serializedVersion: 2
+        x: 280
+        y: 0
+        width: 14.166667
+        height: 351
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Puffer Fish_21
+      rect:
+        serializedVersion: 2
+        x: 294
+        y: 0
+        width: 14.166667
+        height: 351
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Puffer Fish_22
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 0
+        width: 14.166667
+        height: 351
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Puffer Fish_23
+      rect:
+        serializedVersion: 2
+        x: 322
+        y: 0
+        width: 14.166667
+        height: 351
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Puffer Fish_24
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 0
+        width: 14.166667
+        height: 351
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Puffer Fish_25
+      rect:
+        serializedVersion: 2
+        x: 350
+        y: 0
+        width: 14.166667
+        height: 351
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Puffer Fish_26
+      rect:
+        serializedVersion: 2
+        x: 364
+        y: 0
+        width: 14.166667
+        height: 351
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Puffer Fish_27
+      rect:
+        serializedVersion: 2
+        x: 378
+        y: 0
+        width: 14.166667
+        height: 351
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Puffer Fish_28
+      rect:
+        serializedVersion: 2
+        x: 392
+        y: 0
+        width: 14.166667
+        height: 351
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Puffer Fish_29
+      rect:
+        serializedVersion: 2
+        x: 406
+        y: 0
+        width: 14.166667
         height: 351
       alignment: 0
       pivot: {x: 0, y: 0}
