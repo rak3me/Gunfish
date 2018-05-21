@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(LineRenderer))]
 public class GunfishGenerator : MonoBehaviour {
 
 	public Texture2D spriteSheet;
@@ -15,7 +16,7 @@ public class GunfishGenerator : MonoBehaviour {
 	private int numOfDivisions;
 	private float spacing;
 
-    public LineRenderer lineFish;
+	private LineRenderer lineFish;
 
 	// Use this for initialization
 	void Awake () {
@@ -24,6 +25,7 @@ public class GunfishGenerator : MonoBehaviour {
 		fishLength = spriteSheet.width / sprites [0].pixelsPerUnit;
 		fishPieces = new GameObject[numOfDivisions];
 		spacing = fishLength / numOfDivisions;
+		GetComponent<SpriteRenderer> ().sprite = sprites [0];
 
 		fishPieces [0] = gameObject;
 		gameObject.AddComponent<BoxCollider2D> ();
@@ -31,9 +33,12 @@ public class GunfishGenerator : MonoBehaviour {
 
 		float pieceWeight = weight / numOfDivisions;
 
+		lineFish = GetComponent<LineRenderer> ();
+
         lineFish.positionCount = sprites.Length;
         lineFish.startWidth = 1.8f;
         lineFish.endWidth = 1.8f;
+		lineFish.alignment = LineAlignment.Local;
 
 		for (int i = 0; i < sprites.Length; i++) {
 			//fishPieces [i].layer = 8;
@@ -44,9 +49,6 @@ public class GunfishGenerator : MonoBehaviour {
 				fishPieces [i] = new GameObject ("Fish[" + i.ToString () + "]");
 				sr = fishPieces [i].AddComponent<SpriteRenderer> ();
 			}
-
-            sr.enabled = false;
-
 
             LineSegment segment = fishPieces[i].AddComponent<LineSegment>();
             segment.segment = lineFish;
@@ -61,11 +63,30 @@ public class GunfishGenerator : MonoBehaviour {
 			int x = (spriteSheet.width / numOfDivisions * i) + spriteSheet.width / numOfDivisions / 2;
 			Color[] pixels = spriteSheet.GetPixels (x, 0, 1, spriteSheet.height);
 
-			foreach (Color pixel in pixels) {
-				if (pixel.a != 0) {
-					slicePixelHeight++;
+			int sliceStartPixel = 0;
+			int sliceEndPixel = pixels.Length - 1;
+			int sliceMidPoint = pixels.Length / 2;
+
+//			foreach (Color pixel in pixels) {
+//				if (pixel.a != 0) {
+//					slicePixelHeight++;
+//				}
+//			}
+
+			for (int j = 0; j < pixels.Length; j++) {
+				if (pixels [j].a != 0) {
+					sliceStartPixel = j;
+					break;
 				}
 			}
+
+			for (int j = pixels.Length - 1; j >= 0; j--) {
+				if (pixels [j].a != 0) {
+					sliceEndPixel = j;
+					break;
+				}
+			}
+
 			//print ("Pixel Height: " + slicePixelHeight + "\tHeight: " + spriteSheet.height +"\tRatio: " + (float)slicePixelHeight / spriteSheet.height);
 
 			BoxCollider2D col;
@@ -74,8 +95,10 @@ public class GunfishGenerator : MonoBehaviour {
 			} else {
 				col = fishPieces [i].AddComponent<BoxCollider2D> ();
 			}
-			float ySize = Mathf.Min (col.size.y * slicePixelHeight / spriteSheet.height * 1.5f, spriteSheet.height / sprites [0].pixelsPerUnit);
-			col.size = new Vector2 (col.size.x * 1.5f, ySize);
+			float ySize = col.size.y * (sliceEndPixel - sliceStartPixel) / spriteSheet.height * 1.1f;
+			ySize = Mathf.Clamp (ySize, 0.6f, spriteSheet.height / sprites [0].pixelsPerUnit);
+			col.size = new Vector2 (col.size.x * 1.25f, ySize);
+			//col.offset = new Vector2 (0f, 1/((sliceEndPixel - sliceStartPixel) / sprites [0].pixelsPerUnit));
 
 			Rigidbody2D rb;
 			if (fishPieces [i].GetComponent<Rigidbody2D> ()) {
@@ -84,6 +107,7 @@ public class GunfishGenerator : MonoBehaviour {
 				rb = fishPieces [i].AddComponent<Rigidbody2D> ();
 			}
 			rb.mass = pieceWeight;
+			rb.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
 
 			if (i > 0) {
 				HingeJoint2D joint = fishPieces [i].AddComponent<HingeJoint2D> ();
@@ -92,13 +116,14 @@ public class GunfishGenerator : MonoBehaviour {
 				joint.useLimits = true;
 				JointAngleLimits2D limits = joint.limits;
 				limits.min = 0f;
-				limits.max = 0.1f;
+				limits.max = 1f;
 				joint.limits = limits;
 
 				fishPieces [i].transform.position = transform.position + Vector3.right * spacing * i;
 				fishPieces [i].transform.SetParent (transform);
 				//fishPieces [i].transform.localScale = new Vector3 (1.5f, 1f, 1f);
 			}
+			Destroy (sr);
 		}
 	}
 	
