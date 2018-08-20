@@ -24,7 +24,7 @@ public class ServerController : NetworkBehaviour {
     private void OnSpawnObject (NetworkMessage netMsg) {
         GameObjectMsg msg = netMsg.ReadMessage<GameObjectMsg>();
 
-        NetworkServer.Spawn(msg.obj);
+        NetworkServer.Spawn(Instantiate<GameObject>(msg.obj));
     }
 
     private void OnInput (NetworkMessage netMsg) {

@@ -15,8 +15,9 @@ public class PlayerController : NetworkBehaviour {
     public GameObject gunfish;
 
     public override void OnStartLocalPlayer () {
-        //NetworkManager.singleton.client.RegisterHandler(MessageTypes.DEBUGLOGMSG, OnDebugLog);
+        NetworkManager.singleton.client.RegisterHandler(MessageTypes.DEBUGLOGMSG, OnDebugLog);
         NetworkManager.singleton.client.RegisterHandler(MessageTypes.GUNFISHMSG, OnGunfish);
+        NetworkManager.singleton.client.RegisterHandler(MessageTypes.SPAWNMSG, OnSpawnGameObject);
         Debug.Log("ConnId: " + connectionToServer.connectionId);
         return;
         gunfish = GameObject.FindGameObjectsWithTag("Player")[connectionToServer.connectionId];
@@ -27,6 +28,12 @@ public class PlayerController : NetworkBehaviour {
 
     #region MESSAGE HANDLERS
 
+    private void OnSpawnGameObject (NetworkMessage netMsg) {
+        NetIdMsg msg = netMsg.ReadMessage<NetIdMsg>();
+
+
+    }
+
     private void OnDebugLog (NetworkMessage netMsg) {
         DebugLogMsg msg = netMsg.ReadMessage<DebugLogMsg>();
 
@@ -34,7 +41,6 @@ public class PlayerController : NetworkBehaviour {
     }
 
     private void OnGunfish (NetworkMessage netMsg) {
-        return;
         GunfishMsg msg = netMsg.ReadMessage<GunfishMsg>();
 
         Transform fish = NetworkServer.FindLocalObject(msg.netId).transform;

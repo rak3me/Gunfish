@@ -11,7 +11,9 @@ public class ConnectionScript : NetworkBehaviour {
 	override public void OnStartLocalPlayer () {
 		//Resources.Load ("Prefabs/Gunfish");
         gameObject.AddComponent<PlayerController>();
-		CmdSpawnFish ();
+		//CmdSpawnFish ();
+
+        //NetworkManager.singleton.client.Send(MessageTypes.SPAWNMSG, new GameObjectMsg(gunfishPrefab));
 	}
 
 	[Command] private void CmdSpawnFish () {

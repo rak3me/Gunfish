@@ -71,7 +71,7 @@ public class Gunfish : NetworkBehaviour {
     //Handles messages to be sent between the Server and
     //Client.
     private void Update () {
-        if (isClient) {
+        if (isLocalPlayer) {
             if (InputHandler()) {
                 Debug.Log("Input detected!");
                 NetworkManager.singleton.client.Send(MessageTypes.INPUTMSG, new InputMsg(compressedMovement, fire, gameObject));
@@ -91,7 +91,7 @@ public class Gunfish : NetworkBehaviour {
                 currentFireCD -= Time.deltaTime;
             }
 
-            //NetworkServer.SendToAll(MessageTypes.DEBUGLOGMSG, new DebugLogMsg("Updating Transforms!"));
+            NetworkServer.SendToAll(MessageTypes.DEBUGLOGMSG, new DebugLogMsg("Updating Transforms!"));
             UpdateChildrenInfo();
             GunfishMsg msg = new GunfishMsg(netId, 
                                             (Vector2)transform.position, 

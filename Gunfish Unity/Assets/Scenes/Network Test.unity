@@ -188,7 +188,7 @@ Prefab:
     - target: {fileID: 114748637256348838, guid: 422c779e44a1743bba84c6e7c098bd3c,
         type: 2}
       propertyPath: m_SpawnPrefabs.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4810200003826874, guid: 422c779e44a1743bba84c6e7c098bd3c, type: 2}
       propertyPath: m_LocalPosition.x
@@ -233,6 +233,12 @@ Prefab:
       propertyPath: m_NetworkPort
       value: 5555
       objectReference: {fileID: 0}
+    - target: {fileID: 114748637256348838, guid: 422c779e44a1743bba84c6e7c098bd3c,
+        type: 2}
+      propertyPath: m_SpawnPrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 1524286868541690, guid: d8e78fd736ef6438e9075c4574ec7048,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 422c779e44a1743bba84c6e7c098bd3c, type: 2}
   m_IsPrefabParent: 0
