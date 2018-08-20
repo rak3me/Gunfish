@@ -8,7 +8,13 @@ public class Camera2DFollow : MonoBehaviour
 	public float smoothTime = 0.3f;
 	Vector3 vel = Vector3.zero;
 
-	void FixedUpdate() {
+    private void Awake () {
+        
+    }
+
+    void FixedUpdate() {
+        if (!target) return;
+
 		Vector2 averagePoint = Vector2.zero;
 		foreach (Transform child in target) {
 			averagePoint += (Vector2)child.position;

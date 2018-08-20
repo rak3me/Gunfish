@@ -228,6 +228,11 @@ Prefab:
       value: 
       objectReference: {fileID: 1256689666377016, guid: d4318eae89f2546a995a85c1f1691c48,
         type: 2}
+    - target: {fileID: 114748637256348838, guid: 422c779e44a1743bba84c6e7c098bd3c,
+        type: 2}
+      propertyPath: m_NetworkPort
+      value: 5555
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 422c779e44a1743bba84c6e7c098bd3c, type: 2}
   m_IsPrefabParent: 0
