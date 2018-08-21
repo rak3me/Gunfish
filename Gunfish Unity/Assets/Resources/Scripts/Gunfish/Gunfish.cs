@@ -38,8 +38,8 @@ public class Gunfish : NetworkBehaviour {
     [SyncVar] public float currentJumpCD;
     [Range(0.1f, 5f)] public float maxJumpCD = 1f;
     public bool fire;
-    [SyncVar] public float currentFireCD;
-    [Range(0.1f, 5f)] public float maxFireCD = 1f;
+    [SyncVar] [HideInInspector] public float currentFireCD;
+    [HideInInspector] public float maxFireCD = 1f;
 
     [Header("Fish Info")]
     public Rigidbody2D rb;
@@ -52,6 +52,11 @@ public class Gunfish : NetworkBehaviour {
     private AudioSource flopSource;
     private AudioSource shotSource;
     #endregion
+
+    public void ApplyVariableDefaults () {
+        maxJumpCD = 1f;
+
+    }
 
     //Initialize Camera and audio sources for ever local player
     public override void OnStartLocalPlayer () {
@@ -66,18 +71,29 @@ public class Gunfish : NetworkBehaviour {
 
         //Setup the local audio handlers
         /***********************************************************/
+        //Flop sounds
         if (GetComponent<AudioSource>()) {
             flopSource = gameObject.GetComponent<AudioSource>();
         } else {
             flopSource = gameObject.AddComponent<AudioSource>();
         }
+
+        if (flops.Length == 0) {
+            flops = Resources.LoadAll<AudioClip>("Audio/Flops/");
+        }
+
         flopSource.clip = (flops.Length > 0 ? flops[Random.Range(0, flops.Length)] : null);
 
+        //Shot sounds
         if (gun.GetComponent<AudioSource>()) {
             shotSource = gun.gameObject.GetComponent<AudioSource>();
         } else {
             shotSource = gun.gameObject.AddComponent<AudioSource>();
         }
+        if (shots.Length == 0) {
+            shots = new AudioClip[] {Resources.LoadAll<AudioClip>("Audio/Shots/")[0]};
+        }
+
         shotSource.clip = (shots.Length > 0 ? shots[Random.Range(0, shots.Length)] : null);
         /***********************************************************/
     }

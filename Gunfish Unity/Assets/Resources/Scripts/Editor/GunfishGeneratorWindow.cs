@@ -294,7 +294,7 @@ public class GunfishGeneratorWindow : EditorWindow {
 
         //Gunfish Script
         /****************************************************************/
-        Gunfish2D gf = fishPieces[0].AddComponent<Gunfish2D>();
+        Gunfish gf = fishPieces[0].AddComponent<Gunfish>();
         gf.ApplyVariableDefaults();
         /****************************************************************/
 
