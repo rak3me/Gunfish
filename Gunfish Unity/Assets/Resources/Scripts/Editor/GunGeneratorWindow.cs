@@ -1,4 +1,26 @@
-﻿using UnityEngine;
+﻿//GunGeneratorWindow.cs
+//Written by Ryan Kann
+//
+//Purpose:
+//Creates an Editor Window that allows you to input variables
+//to be inserted into a new Gun prefab.
+//
+//How to Use: Press Ctrl+G, or, in the Toolbar, navigate to 
+//Gunfish/Create New Gun. In the window, enter the desired
+//values for the variables and hit Generate. This will
+//create a new Gun GameObject prefab at
+//Assets/Resources/Prefabs/Guns/. You can edit any existing
+//Gun from there.
+//
+//NOTE: 
+//Do NOT touch this script unless you absolutely know
+//what you are doing. If you mess with the Asset generation,
+//there is a risk of data loss (prefabs getting deleted,
+//new prefabs overwriting existing ones, etc.)
+//
+//Talk to Ryan first if you want to change this script.
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -18,7 +40,7 @@ public class GunGeneratorWindow : EditorWindow {
     static float maxCD = 3f;
 
 
-    [MenuItem("Gunfish/Create new Gun %g")]
+    [MenuItem("Gunfish/Create New Gun %g")]
     private static void GunInit () {
         window = GetWindow<GunGeneratorWindow>("Gun Generator");
         window.minSize = new Vector2(220f, 140f);
@@ -82,7 +104,7 @@ public class GunGeneratorWindow : EditorWindow {
         Gun gun = gunGO.AddComponent<Gun>();
         gun.force = force;
         gun.fireSound = fireSound;
-        gun.maxShootCD = shotCooldown;
+        gun.maxFireCD = shotCooldown;
 
         PrefabUtility.CreatePrefab(path, gunGO);
         DestroyImmediate(gunGO);

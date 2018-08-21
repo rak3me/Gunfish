@@ -1,4 +1,31 @@
-﻿using UnityEngine;
+﻿//Gunfish.cs
+//Written by Ryan Kann
+//
+//Purpose:
+//Handle both server and client side properties of a Gunfish GameObject.
+//Ex: User input, ground collision checks, applying physics forces
+//
+//How to Use:
+//Make sure any Gunfish GameObject has this as a component. There is
+//a Gunfish Creator Editor Window that helps with this. For existing
+//Gunfish, you can simply change the public/serialized variables in
+//the Inspector window.
+//
+//TODO:
+//This script utilizes NetworkTransforms to function. Many methods are
+//called on the client, but linked properly to the server and other
+//clients inherently from the NetworkTransforms.
+//
+//I actually really don't like how this is set up for two reasons.
+//1) Network transforms are leave a lot of syncing under the hood, so
+//   it's much harder to figure out how pieces of code work, and whether
+//   they are called on the Client or the Server.
+//2) NetworkTransforms are actually not very good at handling multiple
+//   layers of chained Transforms, and the Gunfish are really jittery.
+//   A potential fix for this I'm experimenting with is seeing disabling
+//   various physics attributes on Gunfish without local player authority.
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Networking;
@@ -6,159 +33,139 @@ using UnityEngine.Networking;
 [RequireComponent(typeof(NetworkConnection))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class Gunfish : NetworkBehaviour {
-
-    //#region CONSTANTS
-    //public const byte POSITION = 0;
-    //public const byte ROTATION = 1;
-    //public const byte SCALE = 2;
-    //public const byte VELOCITY = 0;
-    //#endregion
-
-
     #region VARIABLES
     [Header("Input")]
-    public float movement; //0 = no movement, 1 = left, 2 = right
-    private byte compressedMovement; //0 = no movement, 1 = left, 2 = right
-    public float currentJumpCD;
+    [SyncVar] public float currentJumpCD;
     [Range(0.1f, 5f)] public float maxJumpCD = 1f;
     public bool fire;
-    public float currentFireCD;
+    [SyncVar] public float currentFireCD;
     [Range(0.1f, 5f)] public float maxFireCD = 1f;
 
     [Header("Fish Info")]
-    public Transform[] children;
-    public Vector2[] childrenPositions;
-    public float[] childrenRotations;
-    public Vector2[] childrenScales;
-    public Vector2[] childrenVelocities;
-    public byte childCount;
     public Rigidbody2D rb;
     public Gun gun;
+
+    [Header("Audio")]
+    public AudioClip[] flops;
+    public AudioClip[] shots;
+
+    private AudioSource flopSource;
+    private AudioSource shotSource;
     #endregion
 
-    //When the Gunfish is spawned on the server, initialize the children
-    //so that messages can be sent to them.
-    public override void OnStartServer () {
-        childCount = (byte)transform.childCount;
-        children = new Transform[childCount];
-        childrenPositions = new Vector2[childCount];
-        childrenRotations = new float[childCount];
-        childrenScales = new Vector2[childCount];
-        childrenVelocities = new Vector2[childCount];
+    //Initialize Camera and audio sources for ever local player
+    public override void OnStartLocalPlayer () {
+        base.OnStartLocalPlayer();
 
-        UpdateChildrenInfo();
+        Camera.main.GetComponent<Camera2DFollow>().target = transform;
 
+        //Ensure that the gun is referenced before depending on it
+        if (!gun) {
+            gun = GetComponentInChildren<Gun>();
+        }
+
+        //Setup the local audio handlers
+        /***********************************************************/
+        if (GetComponent<AudioSource>()) {
+            flopSource = gameObject.GetComponent<AudioSource>();
+        } else {
+            flopSource = gameObject.AddComponent<AudioSource>();
+        }
+        flopSource.clip = (flops.Length > 0 ? flops[Random.Range(0, flops.Length)] : null);
+
+        if (gun.GetComponent<AudioSource>()) {
+            shotSource = gun.gameObject.GetComponent<AudioSource>();
+        } else {
+            shotSource = gun.gameObject.AddComponent<AudioSource>();
+        }
+        shotSource.clip = (shots.Length > 0 ? shots[Random.Range(0, shots.Length)] : null);
+        /***********************************************************/
+    }
+
+    //When the Gunfish is started (server and client), assign fish info
+    private void Start () {
         rb = GetComponent<Rigidbody2D>();
         gun = GetComponentInChildren<Gun>();
 
         currentJumpCD = 0f;
         currentFireCD = 0f;
-    }
 
-    public void UpdateChildrenInfo () {
-        for (int i = 0; i < childCount; i++) {
-            if (children[i] == null) {
-                children[i] = transform.GetChild(i);
+        //Set tha maxFireCD of the gunfish to the gun's maxFireCD.
+        //Fire cooldown is handled here to avoid multiple nested
+        //Network Transforms
+        maxFireCD = gun.maxFireCD;
+
+        //Disable HingeJoints on all but the local player to
+        //prevent weird desyncs in movement
+        if (!isLocalPlayer) {
+            rb.bodyType = RigidbodyType2D.Kinematic;
+            foreach (Transform child in transform) {
+                //if (child.GetComponent<HingeJoint2D>()) {
+                //    child.GetComponent<HingeJoint2D>().enabled = false;
+                //}
+
+                if (child.GetComponent<Rigidbody2D>()) {
+                    child.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+                }
             }
-
-            childrenPositions[i] = children[i].position;
-            childrenRotations[i] = children[i].rotation.z;
-            childrenScales[i] = children[i].localScale;
-            childrenVelocities[i] = children[i].GetComponent<Rigidbody2D>().velocity;
         }
     }
 
-    //Handles messages to be sent between the Server and
-    //Client.
+    //Calls input handler on appropriate local players.
+    //Also handles cooldowns
     private void Update () {
         if (isLocalPlayer) {
-            if (InputHandler()) {
-                Debug.Log("Input detected!");
-                NetworkManager.singleton.client.Send(MessageTypes.INPUTMSG, new InputMsg(compressedMovement, fire, gameObject));
-            }
+            ClientInputHandler();
         }
 
-        if (isServer) {
-            if (currentJumpCD <= 0f) {
-                currentJumpCD = 0f;
-            } else {
-                currentJumpCD -= Time.deltaTime;
-            }
+        if (currentJumpCD <= 0f) {
+            currentJumpCD = 0f;
+        } else {
+            currentJumpCD -= Time.deltaTime;
+        }
 
-            if (currentFireCD <= 0f) {
-                currentFireCD = 0f;
-            } else {
-                currentFireCD -= Time.deltaTime;
-            }
-
-            NetworkServer.SendToAll(MessageTypes.DEBUGLOGMSG, new DebugLogMsg("Updating Transforms!"));
-            UpdateChildrenInfo();
-            GunfishMsg msg = new GunfishMsg(netId, 
-                                            (Vector2)transform.position, 
-                                            transform.rotation.z, 
-                                            (Vector2)transform.localScale, 
-                                            rb.velocity, childrenPositions, 
-                                            childrenRotations, childrenScales, 
-                                            childrenVelocities);
-            NetworkServer.SendToAll(MessageTypes.GUNFISHMSG, msg);
+        if (currentFireCD <= 0f) {
+            currentFireCD = 0f;
+        } else {
+            currentFireCD -= Time.deltaTime;
         }
     }
-
-    //public byte DeltaArray (byte type) {
-    //    byte[] array = new byte[childCount * 2];
-
-    //    switch (type) {
-    //        default:
-    //            break;
-
-    //        case POSITION:
-    //            for (int i = 0; i < childCount * 2; i += 2) {
-    //                array[i] = children[i].position.x - transform.position.x
-    //            }
-    //            break;
-
-    //        case ROTATION:
-
-    //            break;
-
-    //        case SCALE:
-                
-    //            break;
-
-    //        case VELOCITY:
-
-    //            break;
-    //    }
-    //}
 
     //Checks user input on the Client. Also returns whether
     //or not an input message should be sent to the server.
-    public bool InputHandler () {
-        bool sendMessage = false;
+    public void ClientInputHandler () {
+        float x = Input.GetAxisRaw("Horizontal");
+        bool shoot = Input.GetKeyDown(KeyCode.Space);
 
-        if ((movement = Input.GetAxisRaw("Horizontal")) != 0) {
-            sendMessage = true;
-            if (movement < 0) {
-                compressedMovement = 1;
-            } else {
-                compressedMovement = 2;
-            }
-        } else {
-            compressedMovement = 0;
-        }  
+        bool apply = (x != 0f || shoot);
 
-        if (fire = Input.GetKeyDown(KeyCode.Space)) {
-            sendMessage = true;
+        if (apply) {
+            ApplyMovement(x, shoot);
+        }
+    }
+
+    //If the movement is non-zero, apply it. Since Gunfish
+    //Utilizes NetworkTransforms, this automatically syncs
+    //to the server as well as every client
+    public void ApplyMovement (float x, bool shoot) {
+        if (x != 0 && currentJumpCD <= 0f) {
+            Move(new Vector2(x, 1f).normalized * 500f, -x * 200f * Random.Range(0.5f, 1f));
         }
 
-        return sendMessage;
+        if (shoot && currentFireCD <= 0f) {
+            Shoot();
+        }
     }
 
     //Called on the server. Applies appropriate forces to the
     //Gunfish. To call this function appropriately, it should
     //be called from the server, after calculating what force
     //and torque should be applied from the server as well.
+    //[ServerCallback]
     public void Move (Vector2 force, float torque) {
+        flopSource.clip = (flops.Length > 0 ? flops[Random.Range(0, flops.Length)] : null);
+        flopSource.Play();
+
         GetComponent<Rigidbody2D>().AddForce(force);
         GetComponent<Rigidbody2D>().AddTorque(torque);
 
@@ -169,15 +176,17 @@ public class Gunfish : NetworkBehaviour {
     //component of a child GameObject, and applies a force. If
     //there is no Gun attached, simply will not fire.
     public void Shoot () {
+        shotSource.clip = (shots.Length > 0 ? shots[Random.Range(0, shots.Length)] : null);
+        shotSource.Play ();
+
+        rb.AddForceAtPosition(transform.right * -gun.force, transform.position);
+
         currentFireCD = maxFireCD;
     }
 
-    //Called on server to check to see if a move command
-    //should be issued. MUST be called on the server in case
-    //the client is lagging and whatnot. Prevents desync.
+    //Checks to see if any Transform in the Gunfish hierarchy
+    //is touching the ground.
     public bool IsGrounded () {
         return true;
     }
-
-
 }

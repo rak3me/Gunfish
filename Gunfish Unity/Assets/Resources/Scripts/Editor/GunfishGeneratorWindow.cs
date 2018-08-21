@@ -1,4 +1,28 @@
-﻿using System.Collections;
+﻿//GunfishGeneratorWindow.cs
+//Written by Ryan Kann
+//
+//Purpose:
+//Creates an Editor Window that allows you to input variables
+//to be inserted into a new Gunfish prefab.
+//
+//How to Use: Press Ctrl+Shift+F, or, in the Toolbar, navigate to 
+//Gunfish/Create New Gunfish. In the window, enter the desired
+//values for the variables and hit Generate. This will
+//create a new Gunfish GameObject prefab at
+//Assets/Resources/Prefabs/Gunfish/. You can edit any existing
+//Gunfish from there.
+//
+//NOTE: 
+//Do NOT touch this script unless you absolutely know
+//what you are doing. If you mess with the Asset generation,
+//there is a risk of data loss (prefabs getting deleted,
+//new prefabs overwriting existing ones, etc.). In addition,
+//The way we make Gunfish is really really weird, so don't
+//mess with it unless you have good reason.
+//
+//Talk to Ryan first if you want to change this script.
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;

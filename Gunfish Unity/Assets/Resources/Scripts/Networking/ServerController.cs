@@ -16,7 +16,6 @@ public class ServerController : NetworkBehaviour {
     }
 
     public void SendClientDebugLog (string msg) {
-        return;
         NetworkServer.SendToAll(MessageTypes.DEBUGLOGMSG, new DebugLogMsg(msg));
     }
 
@@ -24,10 +23,11 @@ public class ServerController : NetworkBehaviour {
     private void OnSpawnObject (NetworkMessage netMsg) {
         GameObjectMsg msg = netMsg.ReadMessage<GameObjectMsg>();
 
-        NetworkServer.Spawn(Instantiate<GameObject>(msg.obj));
+        //NetworkServer.Spawn(Instantiate<GameObject>(msg.obj, ));
     }
 
     private void OnInput (NetworkMessage netMsg) {
+        SendClientDebugLog("Input received");
         InputMsg msg = netMsg.ReadMessage<InputMsg>();
         GameObject gunfishObj = NetworkServer.FindLocalObject(msg.fish.GetComponent<NetworkIdentity>().netId);
         Gunfish gunfish = gunfishObj.GetComponent<Gunfish>();
@@ -52,7 +52,7 @@ public class ServerController : NetworkBehaviour {
         }
 
         if (decompressedMovement != 0) {
-            gunfish.Move(new Vector2(decompressedMovement, 1f).normalized * 200f, -decompressedMovement * 200f * Random.Range(0.5f, 1f));
+            gunfish.Move(new Vector2(decompressedMovement, 1f).normalized * 500f, -decompressedMovement * 200f * Random.Range(0.5f, 1f));
         }
 
         if (msg.shoot && gunfish.currentFireCD <= 0) {
