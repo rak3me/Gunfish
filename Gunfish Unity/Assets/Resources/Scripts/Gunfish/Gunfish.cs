@@ -62,6 +62,8 @@ public class Gunfish : NetworkBehaviour {
     public override void OnStartLocalPlayer () {
         base.OnStartLocalPlayer();
 
+        MusicManager.instance.PlayMusic();
+
         Camera.main.GetComponent<Camera2DFollow>().target = transform;
 
         //Ensure that the gun is referenced before depending on it
@@ -105,6 +107,8 @@ public class Gunfish : NetworkBehaviour {
 
         currentJumpCD = 0f;
         currentFireCD = 0f;
+
+        transform.eulerAngles = Vector3.forward * 180f;
 
         //Set tha maxFireCD of the gunfish to the gun's maxFireCD.
         //Fire cooldown is handled here to avoid multiple nested
