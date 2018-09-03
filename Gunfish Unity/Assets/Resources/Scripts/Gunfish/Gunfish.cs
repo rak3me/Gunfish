@@ -199,7 +199,7 @@ public class Gunfish : NetworkBehaviour {
         shotSource.clip = (shots.Length > 0 ? shots[Random.Range(0, shots.Length)] : null);
         shotSource.Play ();
 
-        rb.AddForceAtPosition(transform.right * -gun.force, transform.position);
+        rb.AddForceAtPosition(transform.right * gun.force, transform.position);
 
         currentFireCD = maxFireCD;
     }
