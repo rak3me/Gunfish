@@ -193,7 +193,7 @@ public class Gunfish : NetworkBehaviour {
                     Move(new Vector2(x, 1f).normalized * 500f, -x * 500f * Random.Range(0.5f, 1f));
                 }
             } else {
-                if (currentAirborneJumpCD <= 0f) {
+                if (currentAirborneJumpCD <= 0f && transform.GetChild(transform.childCount / 2).GetComponent<Rigidbody2D>().angularVelocity < 360f) {
                     Rotate(50f * -x);
                 }
             }

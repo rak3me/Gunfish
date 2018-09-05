@@ -381,6 +381,11 @@ Prefab:
       propertyPath: m_NetworkAddress
       value: 172.25.86.15
       objectReference: {fileID: 0}
+    - target: {fileID: 114748637256348838, guid: 422c779e44a1743bba84c6e7c098bd3c,
+        type: 2}
+      propertyPath: m_OnlineScene
+      value: Level Demo1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 422c779e44a1743bba84c6e7c098bd3c, type: 2}
   m_IsPrefabParent: 0
