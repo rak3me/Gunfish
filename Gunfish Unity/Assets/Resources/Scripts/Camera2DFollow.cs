@@ -5,15 +5,15 @@ using UnityEngine;
 public class Camera2DFollow : MonoBehaviour
 {
 	public Transform target;
-	public float smoothTime = 0.3f;
-	Vector3 vel = Vector3.zero;
 
-    private void Awake () {
-        
-    }
+	public float smoothTime = 0.3f;
+    public float adjustedSmoothTime;
+	Vector3 vel = Vector3.zero;
 
     void FixedUpdate() {
         if (!target) return;
+        //Debug.Log("Multiplier: " + (rb ? (1 / (1 + rb.velocity.magnitude / 20f)) : 1));
+        adjustedSmoothTime = smoothTime * (1 / (1 + target.GetComponent<Rigidbody2D>().velocity.magnitude / 100f));
 
 		Vector2 averagePoint = Vector2.zero;
 		foreach (Transform child in target) {
@@ -22,7 +22,7 @@ public class Camera2DFollow : MonoBehaviour
 		averagePoint /= target.childCount;
 
 		Vector3 smoothTarget = new Vector3(averagePoint.x, averagePoint.y, -10);
-		transform.position = Vector3.SmoothDamp (transform.position, smoothTarget, ref vel, smoothTime);
+        transform.position = Vector3.SmoothDamp (transform.position, smoothTarget, ref vel, adjustedSmoothTime);
 
 	}
 }
