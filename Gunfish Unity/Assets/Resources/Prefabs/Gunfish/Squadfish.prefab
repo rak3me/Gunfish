@@ -912,6 +912,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1063ae8ff87c04c4f8c5eedcfa889d39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunfish: {fileID: 0}
   segment: {fileID: 120862901843517972}
   index: 0
   grounded: 0
@@ -945,6 +946,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1063ae8ff87c04c4f8c5eedcfa889d39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunfish: {fileID: 0}
   segment: {fileID: 120862901843517972}
   index: 8
   grounded: 0
@@ -978,6 +980,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1063ae8ff87c04c4f8c5eedcfa889d39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunfish: {fileID: 0}
   segment: {fileID: 120862901843517972}
   index: 5
   grounded: 0
@@ -992,6 +995,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1063ae8ff87c04c4f8c5eedcfa889d39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunfish: {fileID: 0}
   segment: {fileID: 120862901843517972}
   index: 4
   grounded: 0
@@ -1027,6 +1031,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1063ae8ff87c04c4f8c5eedcfa889d39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunfish: {fileID: 0}
   segment: {fileID: 120862901843517972}
   index: 6
   grounded: 0
@@ -1041,6 +1046,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1063ae8ff87c04c4f8c5eedcfa889d39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunfish: {fileID: 0}
   segment: {fileID: 120862901843517972}
   index: 2
   grounded: 0
@@ -1074,6 +1080,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1063ae8ff87c04c4f8c5eedcfa889d39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunfish: {fileID: 0}
   segment: {fileID: 120862901843517972}
   index: 1
   grounded: 0
@@ -1123,11 +1130,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentJumpCD: 0
   maxJumpCD: 1
+  currentAirborneJumpCD: 0
+  maxAirborneJumpCD: 0.1
   fire: 0
   currentFireCD: 0
   maxFireCD: 1
   rb: {fileID: 0}
   gun: {fileID: 0}
+  groundedCount: 0
   flops: []
   shots: []
 --- !u!114 &114645449871140880
@@ -1141,6 +1151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1063ae8ff87c04c4f8c5eedcfa889d39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunfish: {fileID: 0}
   segment: {fileID: 120862901843517972}
   index: 7
   grounded: 0
@@ -1193,6 +1204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1063ae8ff87c04c4f8c5eedcfa889d39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunfish: {fileID: 0}
   segment: {fileID: 120862901843517972}
   index: 9
   grounded: 0
@@ -1277,6 +1289,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1063ae8ff87c04c4f8c5eedcfa889d39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunfish: {fileID: 0}
   segment: {fileID: 120862901843517972}
   index: 3
   grounded: 0

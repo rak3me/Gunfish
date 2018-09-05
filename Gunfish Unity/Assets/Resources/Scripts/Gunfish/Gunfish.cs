@@ -37,6 +37,8 @@ public class Gunfish : NetworkBehaviour {
     [Header("Input")]
     [SyncVar] public float currentJumpCD;
     [Range(0.1f, 5f)] public float maxJumpCD = 1f;
+    [SyncVar] public float currentAirborneJumpCD;
+    [Range(0.1f, 5f)] public float maxAirborneJumpCD = 0.4f;
     public bool fire;
     [SyncVar] [HideInInspector] public float currentFireCD;
     [HideInInspector] public float maxFireCD = 1f;
@@ -44,6 +46,9 @@ public class Gunfish : NetworkBehaviour {
     [Header("Fish Info")]
     public Rigidbody2D rb;
     public Gun gun;
+
+    [Tooltip("The number of fish pieces not touching the ground. (0 = grounded)")]
+    public int groundedCount = 0;
 
     [Header("Audio")]
     public AudioClip[] flops;
@@ -105,8 +110,11 @@ public class Gunfish : NetworkBehaviour {
         rb = GetComponent<Rigidbody2D>();
         gun = GetComponentInChildren<Gun>();
 
+        groundedCount = 0;
+
         currentJumpCD = 0f;
         currentFireCD = 0f;
+        currentAirborneJumpCD = 0f;
 
         transform.eulerAngles = Vector3.forward * 180f;
 
@@ -136,6 +144,7 @@ public class Gunfish : NetworkBehaviour {
     private void Update () {
         if (isLocalPlayer) {
             ClientInputHandler();
+            Debug.Log("Grounded: " + (groundedCount > 0));
         }
 
         if (currentJumpCD <= 0f) {
@@ -148,6 +157,16 @@ public class Gunfish : NetworkBehaviour {
             currentFireCD = 0f;
         } else {
             currentFireCD -= Time.deltaTime;
+        }
+
+        if (currentAirborneJumpCD <= 0f) {
+            currentAirborneJumpCD = 0f;
+        } else {
+            currentAirborneJumpCD -= Time.deltaTime;
+        }
+
+        if (groundedCount < 0) {
+            groundedCount = 0;
         }
     }
 
@@ -168,8 +187,16 @@ public class Gunfish : NetworkBehaviour {
     //Utilizes NetworkTransforms, this automatically syncs
     //to the server as well as every client
     public void ApplyMovement (float x, bool shoot) {
-        if (x != 0 && currentJumpCD <= 0f) {
-            Move(new Vector2(x, 1f).normalized * 500f, -x * 200f * Random.Range(0.5f, 1f));
+        if (x != 0) {
+            if (groundedCount > 0) {
+                if (currentJumpCD <= 0f) {
+                    Move(new Vector2(x, 1f).normalized * 500f, -x * 500f * Random.Range(0.5f, 1f));
+                }
+            } else {
+                if (currentAirborneJumpCD <= 0f) {
+                    Rotate(50f * -x);
+                }
+            }
         }
 
         if (shoot && currentFireCD <= 0f) {
@@ -186,10 +213,16 @@ public class Gunfish : NetworkBehaviour {
         flopSource.clip = (flops.Length > 0 ? flops[Random.Range(0, flops.Length)] : null);
         flopSource.Play();
 
-        GetComponent<Rigidbody2D>().AddForce(force);
-        GetComponent<Rigidbody2D>().AddTorque(torque);
+        transform.GetChild(transform.childCount / 2).GetComponent<Rigidbody2D>().AddForce(force);
+        transform.GetChild(transform.childCount / 2).GetComponent<Rigidbody2D>().AddTorque(torque);
 
         currentJumpCD = maxJumpCD;
+    }
+
+    public void Rotate (float torque) {
+        transform.GetChild(transform.childCount / 2).GetComponent<Rigidbody2D>().AddTorque(torque);
+
+        currentAirborneJumpCD = maxAirborneJumpCD;
     }
 
     //Called on the server. Takes the info from the attached Gun
@@ -202,11 +235,14 @@ public class Gunfish : NetworkBehaviour {
         rb.AddForceAtPosition(transform.right * gun.force, transform.position);
 
         currentFireCD = maxFireCD;
+
+        //Shoot bullet raycast
+        //if (Physics2D.RaycastAll(transform.position, 
     }
 
     //Checks to see if any Transform in the Gunfish hierarchy
     //is touching the ground.
     public bool IsGrounded () {
-        return true;
+        return (groundedCount == 0);
     }
 }

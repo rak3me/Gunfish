@@ -18,5 +18,6 @@ public class Parallax : MonoBehaviour {
 
 		//transform.position = new Vector3 (weight * Camera.main.transform.position.x, weight * Camera.main.transform.position.y, transform.position.z);
 		GetComponent<Renderer>().material.mainTextureOffset = new Vector2 (weight * Camera.main.transform.position.x, weight * Camera.main.transform.position.y);
+        //print("Renderer: " + GetComponent<Renderer>().material.mainTextureOffset);
 	}
 }
