@@ -144,6 +144,23 @@ public class GunshotParticleMsg : MessageBase {
     }
 }
 
+public class GunshotAudioMsg : MessageBase {
+    public short clipIndex;
+    public Vector3 position;
+
+    public GunshotAudioMsg () { }
+
+    public GunshotAudioMsg (short clipIndex) {
+        this.clipIndex = clipIndex;
+        this.position = Vector3.zero;
+    }
+
+    public GunshotAudioMsg (short clipIndex, Vector3 position) {
+        this.clipIndex = clipIndex;
+        this.position = position;
+    }
+}
+
 
 
 public class GameObjectMsg : MessageBase { 

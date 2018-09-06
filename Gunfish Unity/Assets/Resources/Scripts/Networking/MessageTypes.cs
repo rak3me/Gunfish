@@ -16,4 +16,5 @@ public class MessageTypes {
     public static short GUNFISHMSG = 300;
     public static short GUNSHOTHITMSG = 301;
     public static short GUNSHOTPARTICLEMSG = 302;
+    public static short GUNSHOTAUDIOMSG = 303;
 }

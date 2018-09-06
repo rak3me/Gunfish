@@ -243,6 +243,9 @@ public class Gunfish : NetworkBehaviour {
 
         currentFireCD = maxFireCD;
 
+        Vector3 position = transform.position;
+
+        NetworkManager.singleton.client.Send(MessageTypes.GUNSHOTAUDIOMSG, new GunshotAudioMsg(0, position));
         NetworkManager.singleton.client.Send(MessageTypes.NETIDMSG, new NetIdMsg(netId));
 
         ////Shoot bullet raycast. Do multiple hits to avoid collision with own fish pieces

@@ -6,12 +6,13 @@ using UnityEngine.Networking;
 public class PlayerController : NetworkBehaviour {
 
     public GameObject gunshotDebris;
-    public AudioClip gunshotAudio;
+    public AudioClip[] gunshotAudio;
 
-    public override void OnStartLocalPlayer () {
-        NetworkManager.singleton.client.RegisterHandler(MessageTypes.DEBUGLOGMSG, OnDebugLog);
-        NetworkManager.singleton.client.RegisterHandler(MessageTypes.GUNSHOTPARTICLEMSG, OnGunshotParticle);
-    }
+    //public override void OnStartLocalPlayer () {
+    //    NetworkManager.singleton.client.RegisterHandler(MessageTypes.DEBUGLOGMSG, OnDebugLog);
+    //    NetworkManager.singleton.client.RegisterHandler(MessageTypes.GUNSHOTPARTICLEMSG, OnGunshotParticle);
+
+    //}
 
     private void Start () {
         if (gunshotDebris == null) {
@@ -19,26 +20,33 @@ public class PlayerController : NetworkBehaviour {
         }
 
         if (gunshotAudio == null) {
-            gunshotAudio = Resources.Load<AudioClip>("Audio/Shots/RifleShot");
+            gunshotAudio = Resources.LoadAll<AudioClip>("Audio/Shots/");
         }
 
         //Debug.Log("ConnId: " + connectionToServer.connectionId);
 
         NetworkManager.singleton.client.RegisterHandler(MessageTypes.DEBUGLOGMSG, OnDebugLog);
         NetworkManager.singleton.client.RegisterHandler(MessageTypes.GUNSHOTPARTICLEMSG, OnGunshotParticle);
+        NetworkManager.singleton.client.RegisterHandler(MessageTypes.GUNSHOTAUDIOMSG, OnGunshotAudio);
     }
 
     #region MESSAGE HANDLERS
 
-    private void OnGunshotParticle (NetworkMessage netMsg) {
-        GunshotParticleMsg msg = netMsg.ReadMessage<GunshotParticleMsg>();
+    private void OnGunshotAudio (NetworkMessage netMsg) {
+        Debug.Log("Client is good");
+        GunshotAudioMsg msg = netMsg.ReadMessage<GunshotAudioMsg>();
 
         GameObject audioObj = new GameObject();
-        audioObj.transform.position = msg.origin;
+        audioObj.name = "GunshotAudioSource";
+        audioObj.transform.position = msg.position;
         AudioSource audioSource = audioObj.AddComponent<AudioSource>();
-        audioSource.clip = gunshotAudio;
+        audioSource.clip = Resources.LoadAll<AudioClip>("Audio/Shots/")[msg.clipIndex];
         audioSource.Play();
-        Destroy(audioObj, 5f);
+        Destroy(audioObj, audioSource.clip.length);
+    }
+
+    private void OnGunshotParticle (NetworkMessage netMsg) {
+        GunshotParticleMsg msg = netMsg.ReadMessage<GunshotParticleMsg>();
 
         GameObject hitDebris = Instantiate<GameObject>(
             gunshotDebris, 
