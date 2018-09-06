@@ -24,6 +24,128 @@ public class NetIdMsg : MessageBase {
     }
 }
 
+public class GunshotHitMsg : MessageBase {
+    public Vector2 force;
+    public float damage;
+    public Vector3 position;
+
+    public GunshotHitMsg () { }
+
+    public GunshotHitMsg (Vector2 force) {
+        this.force = force;
+        damage = 0f;
+        this.position = Vector3.zero;
+    }
+
+    public GunshotHitMsg (Vector2 force, float damage) {
+        this.force = force;
+        this.damage = damage;
+        this.position = Vector3.zero;
+    }
+
+    public GunshotHitMsg (Vector2 force, float damage, Vector3 position) {
+        this.force = force;
+        this.damage = damage;
+        this.position = position;
+    }
+}
+
+public class GunshotParticleMsg : MessageBase {
+    public Vector3 origin;
+    public Vector3 position;
+    public Vector2 normal;
+
+    //Color components
+    public float r;
+    public float g;
+    public float b;
+    public float a;
+
+    public GunshotParticleMsg () { }
+
+    public GunshotParticleMsg (Vector3 position) {
+        this.position = position;
+        this.origin = Vector3.zero;
+        this.normal = Vector2.zero;
+        this.r = 0f;
+        this.g = 0f;
+        this.b = 0f;
+        this.a = 1f;
+    }
+
+    public GunshotParticleMsg (Vector3 position, Vector3 origin) {
+        this.position = position;
+        this.origin = origin;
+        this.normal = Vector2.zero;
+        this.r = 0f;
+        this.g = 0f;
+        this.b = 0f;
+        this.a = 1f;
+    }
+
+    public GunshotParticleMsg (Vector3 position, Vector2 normal) {
+        this.position = position;
+        this.origin = Vector3.zero;
+        this.normal = normal;
+        this.r = 0f;
+        this.g = 0f;
+        this.b = 0f;
+        this.a = 1f;
+    }
+
+    public GunshotParticleMsg (Vector3 position, Vector3 origin, Vector2 normal) {
+        this.position = position;
+        this.origin = this.normal;
+        this.normal = normal;
+        this.r = 0f;
+        this.g = 0f;
+        this.b = 0f;
+        this.a = 1f;
+    }
+
+    public GunshotParticleMsg (Vector3 position, Vector2 normal, float r, float g, float b) {
+        this.position = position;
+        this.origin = Vector3.zero;
+        this.normal = normal;
+        this.r = r;
+        this.g = g;
+        this.b = b;
+        this.a = 1f;
+    }
+
+    public GunshotParticleMsg (Vector3 position, Vector3 origin, Vector2 normal, float r, float g, float b) {
+        this.position = position;
+        this.origin = origin;
+        this.normal = normal;
+        this.r = r;
+        this.g = g;
+        this.b = b;
+        this.a = 1f;
+    }
+
+    public GunshotParticleMsg (Vector3 position, Vector2 normal, float r, float g, float b, float a) {
+        this.position = position;
+        this.origin = Vector3.zero;
+        this.normal = normal;
+        this.r = r;
+        this.g = g;
+        this.b = b;
+        this.a = a;
+    }
+
+    public GunshotParticleMsg (Vector3 position, Vector3 origin, Vector2 normal, float r, float g, float b, float a) {
+        this.position = position;
+        this.origin = origin;
+        this.normal = normal;
+        this.r = r;
+        this.g = g;
+        this.b = b;
+        this.a = a;
+    }
+}
+
+
+
 public class GameObjectMsg : MessageBase { 
     public GameObject obj;
 
@@ -50,63 +172,3 @@ public class InputMsg : MessageBase {
         fish = gunfish;
     }
 }
-
-public class GunfishMsg : MessageBase {
-    public NetworkInstanceId netId;
-
-    public Vector2 startPosition;
-    public float startRotation;
-    public Vector2 startScale;
-    public Vector2 startVelocity;
-
-    public Vector2[] positions;
-    public float[] rotations;
-    public Vector2[] scales;
-    public Vector2[] velocities;
-
-    public GunfishMsg () { }
-
-    public GunfishMsg (NetworkInstanceId netId, Vector2 startPosition, float startRotation, Vector2 startScale, Vector2 startVelocity, Vector2[] positions, float[] rotations, Vector2[] scales, Vector2[] velocities) {
-        this.netId = netId;
-
-        this.startPosition = startPosition;
-        this.startRotation = startRotation;
-        this.startScale = startScale;
-        this.startVelocity = startVelocity;
-
-        this.positions = positions;
-        this.rotations = rotations;
-        this.scales = scales;
-        this.velocities = velocities;
-    }
-}
-
-//public class GunfishMsg : MessageBase {
-//    NetworkIdentity netId;
-
-//    Vector3 startPosition;
-//    Vector3 startRotation;
-//    Vector3 startScale;
-//    Vector2 startVelocity;
-
-//    byte[] childPositions;
-//    byte[] childRotations;
-//    byte[] childScales;
-//    byte[] childVelocities;
-
-//    public GunfishMsg () { }
-
-//    public GunfishMsg (NetworkIdentity networkId, Vector3 startPos, byte[] childPos, Vector3 startRot, byte[] childRot, Vector3 startScl, byte[] childScl, Vector2 startVel, byte[] childVel) {
-//        netId = networkId;
-
-//        startPosition = startPos;
-//        startRotation = startRot;
-//        startScale = startScl;
-//        startVelocity = startVel;
-
-//        childPositions = childPos;
-//        childRotations = childRot;
-//        childScales = childScl;
-//        childVelocities = childVel;
-//    }
-//}

@@ -9,10 +9,7 @@ public class ServerController : NetworkBehaviour {
         ConnectionConfig config = new ConnectionConfig();
         config.DisconnectTimeout = 5000; //If the player times out for 5 seconds, disconnect them
 
-        NetworkServer.RegisterHandler(MessageTypes.INPUTMSG, OnInput);
-        NetworkServer.RegisterHandler(MessageTypes.SPAWNMSG, OnSpawnObject);
-
-        SendClientDebugLog("Starting Server!");
+        NetworkServer.RegisterHandler(MessageTypes.NETIDMSG, OnNetID);
     }
 
     public void SendClientDebugLog (string msg) {
@@ -20,44 +17,67 @@ public class ServerController : NetworkBehaviour {
     }
 
     #region MESSAGE HANDLERS
-    private void OnSpawnObject (NetworkMessage netMsg) {
-        GameObjectMsg msg = netMsg.ReadMessage<GameObjectMsg>();
 
-        //NetworkServer.Spawn(Instantiate<GameObject>(msg.obj, ));
+    //This is called when a fish shoots
+    public void OnNetID (NetworkMessage netMsg) {
+        NetIdMsg msg = netMsg.ReadMessage<NetIdMsg>();
+        Transform fish = NetworkServer.FindLocalObject(msg.netId).transform;
+
+        //Shoot bullet raycast. Do multiple hits to avoid collision with own fish pieces
+        Vector3 direction = fish.GetChild(fish.childCount-1).right.normalized;
+        RaycastHit2D[] hits = Physics2D.RaycastAll(
+            fish.GetChild(fish.childCount-1).position, direction
+        );
+
+        if (hits.Length > 0) {
+            bool targetHit = false;
+            RaycastHit2D realHit = new RaycastHit2D();
+            Color hitColor = Color.red;
+
+            foreach (RaycastHit2D hit in hits) {
+                if (hit.collider.CompareTag("Player")) {
+                    if (hit.transform == fish) continue; //ignore collisions with self
+                    else if (hit.transform.parent != null && hit.transform.parent == fish) continue;
+                             
+                    realHit = hit;
+                    targetHit = true;
+
+                    //If it's a fish, ensure it's applied to the root
+                    Rigidbody2D target = null;
+                    if (hit.transform.parent == null) {
+                        target = hit.transform.GetComponent<Rigidbody2D>();
+                    } else if (hit.transform.parent.CompareTag("Player")) {
+                        target = hit.transform.parent.GetComponent<Rigidbody2D>();
+                    }
+
+                    if (target != null) {
+                        NetworkServer.SendToClient(hit.transform.GetComponent<Gunfish>().connectionToServer.connectionId,
+                                                   MessageTypes.GUNSHOTHITMSG,
+                                                   new GunshotHitMsg(direction * 200f, 1f, realHit.point)
+                                                  );
+                    }
+                    break;
+                } else if (hit.collider.CompareTag("Ground")) {
+                    realHit = hit;
+                    targetHit = true;
+                    hitColor = hit.collider.GetComponent<SpriteRenderer>().color;
+                    break;
+                }
+            }
+
+            if (targetHit) {
+                NetworkServer.SendToAll(MessageTypes.GUNSHOTPARTICLEMSG, 
+                                        new GunshotParticleMsg(realHit.point,
+                                                               fish.position,
+                                                               realHit.normal,
+                                                               hitColor.r,
+                                                               hitColor.g,
+                                                               hitColor.b
+                                                              )
+                                       );
+            }
+        }
     }
 
-    private void OnInput (NetworkMessage netMsg) {
-        SendClientDebugLog("Input received");
-        InputMsg msg = netMsg.ReadMessage<InputMsg>();
-        GameObject gunfishObj = NetworkServer.FindLocalObject(msg.fish.GetComponent<NetworkIdentity>().netId);
-        Gunfish gunfish = gunfishObj.GetComponent<Gunfish>();
-
-        if (gunfish == null) {
-            SendClientDebugLog("Error in ServerController - OnInput. GameObject does not have Gunfish component.");
-            return;
-        }
-
-        byte movement = msg.movement;
-        int decompressedMovement = 0;
-
-        if (movement == 1) {
-            decompressedMovement = -1;
-        } else if (movement == 2) {
-            decompressedMovement = 1;
-        }
-
-        //Override for movement. If jump is on cooldown, do nothing.
-        if (gunfish.currentJumpCD > 0f) {
-            decompressedMovement = 0;
-        }
-
-        if (decompressedMovement != 0) {
-            gunfish.Move(new Vector2(decompressedMovement, 1f).normalized * 500f, -decompressedMovement * 200f * Random.Range(0.5f, 1f));
-        }
-
-        if (msg.shoot && gunfish.currentFireCD <= 0) {
-            gunfish.Shoot();
-        }
-    }
     #endregion
 }

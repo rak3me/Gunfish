@@ -4,10 +4,16 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public class MessageTypes {
-    public static short DEBUGLOGMSG = MsgType.Highest + 1;
+    //Debug/Misc (100-199)
+    public static short DEBUGLOGMSG = 100;
+    public static short INPUTMSG = 101;
 
-    public static short INPUTMSG = MsgType.Highest + 2;
-    public static short GUNFISHMSG = MsgType.Highest + 3;
+    //GameObject (200-299)
+    public static short NETIDMSG = 200;
+    public static short SPAWNMSG = 201;
 
-    public static short SPAWNMSG = MsgType.Highest + 4;
+    //Gunfish Specific (300-399)
+    public static short GUNFISHMSG = 300;
+    public static short GUNSHOTHITMSG = 301;
+    public static short GUNSHOTPARTICLEMSG = 302;
 }

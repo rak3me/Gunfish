@@ -33,6 +33,7 @@ using UnityEngine.Networking;
 [RequireComponent(typeof(NetworkConnection))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class Gunfish : NetworkBehaviour {
+    
     #region VARIABLES
     [Header("Input")]
     [SyncVar] public float currentJumpCD;
@@ -113,6 +114,9 @@ public class Gunfish : NetworkBehaviour {
 
     //When the Gunfish is started (server and client), assign fish info
     private void Start () {
+        //Register Messages
+        NetworkManager.singleton.client.RegisterHandler(MessageTypes.GUNSHOTHITMSG, OnGunshotHit);
+
         rb = GetComponent<Rigidbody2D>();
         gun = GetComponentInChildren<Gun>();
 
@@ -235,40 +239,39 @@ public class Gunfish : NetworkBehaviour {
     //component of a child GameObject, and applies a force. If
     //there is no Gun attached, simply will not fire.
     public void Shoot () {
-        shotSource.clip = (shots.Length > 0 ? shots[Random.Range(0, shots.Length)] : null);
-        shotSource.Play ();
-
         rb.AddForceAtPosition(transform.right * gun.force, transform.position);
 
         currentFireCD = maxFireCD;
 
-        //Shoot bullet raycast. Do multiple hits to avoid collision with own fish pieces
-        Vector3 direction = transform.GetChild(transform.childCount-1).right.normalized;
-        RaycastHit2D[] hits = Physics2D.RaycastAll(
-            transform.GetChild(transform.childCount-1).position, direction
-        );
+        NetworkManager.singleton.client.Send(MessageTypes.NETIDMSG, new NetIdMsg(netId));
 
-        if (hits.Length > 0) {
-            foreach (RaycastHit2D hit in hits) {
-                if (hit.collider.CompareTag("Player")) {
-                    //If it's a fish, ensure it's applied to the root
-                    Rigidbody2D target = null;
-                    if (hit.transform.parent == null) {
-                        target = hit.transform.GetComponent<Rigidbody2D>();
-                    } else if (hit.transform.parent.CompareTag("Player")) {
-                        target = hit.transform.parent.GetComponent<Rigidbody2D>();
-                    }
+        ////Shoot bullet raycast. Do multiple hits to avoid collision with own fish pieces
+        //Vector3 direction = transform.GetChild(transform.childCount-1).right.normalized;
+        //RaycastHit2D[] hits = Physics2D.RaycastAll(
+        //    transform.GetChild(transform.childCount-1).position, direction
+        //);
 
-                    if (target != null) {
-                        target.AddForce(direction * 200f);
-                    }
+        //if (hits.Length > 0) {
+        //    foreach (RaycastHit2D hit in hits) {
+        //        if (hit.collider.CompareTag("Player")) {
+        //            //If it's a fish, ensure it's applied to the root
+        //            Rigidbody2D target = null;
+        //            if (hit.transform.parent == null) {
+        //                target = hit.transform.GetComponent<Rigidbody2D>();
+        //            } else if (hit.transform.parent.CompareTag("Player")) {
+        //                target = hit.transform.parent.GetComponent<Rigidbody2D>();
+        //            }
 
-                } else if (hit.collider.CompareTag("Ground")) {
-                    GameObject hitDebris = Instantiate<GameObject>(debris, hit.point, Quaternion.Euler(hit.normal));
-                    Destroy(hitDebris, 2f);
-                }
-            }
-        }
+        //            if (target != null) {
+        //                target.AddForce(direction * 200f);
+        //            }
+
+        //        } else if (hit.collider.CompareTag("Ground")) {
+        //            GameObject hitDebris = Instantiate<GameObject>(debris, hit.point, Quaternion.Euler(hit.normal));
+        //            Destroy(hitDebris, 2f);
+        //        }
+        //    }
+        //}
     }
 
     //Checks to see if any Transform in the Gunfish hierarchy
@@ -276,4 +279,20 @@ public class Gunfish : NetworkBehaviour {
     public bool IsGrounded () {
         return (groundedCount == 0);
     }
+
+    #region MESSAGE HANDLERS
+
+    private void OnGunshotHit (NetworkMessage netMsg) {
+        GunshotHitMsg msg = netMsg.ReadMessage<GunshotHitMsg>();
+
+        if (rb) {
+            rb.AddForceAtPosition(msg.force, msg.position);
+        }
+
+        //TODO
+        //LOSE HEALTH HERE
+        //health -= msg.damage;
+    }
+
+    #endregion
 }

@@ -13,7 +13,7 @@ public class Camera2DFollow : MonoBehaviour
     void FixedUpdate() {
         if (!target) return;
         //Debug.Log("Multiplier: " + (rb ? (1 / (1 + rb.velocity.magnitude / 20f)) : 1));
-        adjustedSmoothTime = smoothTime * (1 / (1 + target.GetComponent<Rigidbody2D>().velocity.magnitude / 100f));
+        adjustedSmoothTime = smoothTime * (1 / (1 + target.GetComponent<Rigidbody2D>().velocity.sqrMagnitude / 100f));
 
 		Vector2 averagePoint = Vector2.zero;
 		foreach (Transform child in target) {
