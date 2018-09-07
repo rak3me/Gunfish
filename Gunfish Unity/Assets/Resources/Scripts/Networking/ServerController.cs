@@ -20,18 +20,15 @@ public class ServerController : NetworkBehaviour {
     #region MESSAGE HANDLERS
 
     public void OnGunshotAudio (NetworkMessage netMsg) {
-        Debug.Log("Server is good");
+        //Debug.Log("Server is good");
         GunshotAudioMsg msg = netMsg.ReadMessage<GunshotAudioMsg>();
-
-        short clipIndex = msg.clipIndex;
-        Vector3 position = msg.position;
 
         NetworkServer.SendToAll(MessageTypes.GUNSHOTAUDIOMSG, new GunshotAudioMsg(msg.clipIndex, msg.position));
     }
 
     //This is called when a fish shoots
     public void OnNetID (NetworkMessage netMsg) {
-        Debug.Log("OnNetID called");
+        //Debug.Log("OnNetID called");
         NetIdMsg msg = netMsg.ReadMessage<NetIdMsg>();
         Transform fish = NetworkServer.FindLocalObject(msg.netId).transform;
 
@@ -50,7 +47,9 @@ public class ServerController : NetworkBehaviour {
                 if (hit.collider.CompareTag("Player")) {
                     if (hit.transform == fish) continue; //ignore collisions with self
                     else if (hit.transform.parent != null && hit.transform.parent == fish) continue;
-                             
+
+                    Debug.Log("Hit: " + hit.collider.name);
+
                     realHit = hit;
                     targetHit = true;
 
@@ -63,7 +62,7 @@ public class ServerController : NetworkBehaviour {
                     }
 
                     if (target != null) {
-                        NetworkServer.SendToClient(hit.transform.GetComponent<Gunfish>().connectionToServer.connectionId,
+                        NetworkServer.SendToClient(hit.transform.GetComponent<Gunfish>().connectionToClient.connectionId,
                                                    MessageTypes.GUNSHOTHITMSG,
                                                    new GunshotHitMsg(direction * 200f, 1f, realHit.point)
                                                   );

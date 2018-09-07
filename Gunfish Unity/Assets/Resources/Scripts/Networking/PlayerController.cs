@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 public class PlayerController : NetworkBehaviour {
 
     public GameObject gunshotDebris;
-    public AudioClip[] gunshotAudio;
+    public AudioClip[] gunshotAudio = null;
 
     //public override void OnStartLocalPlayer () {
     //    NetworkManager.singleton.client.RegisterHandler(MessageTypes.DEBUGLOGMSG, OnDebugLog);
@@ -33,20 +33,22 @@ public class PlayerController : NetworkBehaviour {
     #region MESSAGE HANDLERS
 
     private void OnGunshotAudio (NetworkMessage netMsg) {
-        Debug.Log("Client is good");
+        //Debug.Log("Client is good");
         GunshotAudioMsg msg = netMsg.ReadMessage<GunshotAudioMsg>();
 
         GameObject audioObj = new GameObject();
         audioObj.name = "GunshotAudioSource";
         audioObj.transform.position = msg.position;
         AudioSource audioSource = audioObj.AddComponent<AudioSource>();
-        audioSource.clip = Resources.LoadAll<AudioClip>("Audio/Shots/")[msg.clipIndex];
+        audioSource.clip = gunshotAudio[msg.clipIndex];
         audioSource.Play();
         Destroy(audioObj, audioSource.clip.length);
     }
 
     private void OnGunshotParticle (NetworkMessage netMsg) {
         GunshotParticleMsg msg = netMsg.ReadMessage<GunshotParticleMsg>();
+
+        Debug.Log("AHHHH");
 
         GameObject hitDebris = Instantiate<GameObject>(
             gunshotDebris, 
