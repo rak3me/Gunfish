@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 233096434428029362}
   m_Layer: 8
   m_Name: Fish[9]
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 233426037341815968}
   m_Layer: 8
   m_Name: Fish[8]
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -79,7 +79,7 @@ GameObject:
   - component: {fileID: 233759238552767286}
   m_Layer: 8
   m_Name: Fish[2]
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 233377276202244984}
   m_Layer: 8
   m_Name: Fish[7]
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 233014542225241704}
   m_Layer: 8
   m_Name: Fish[3]
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 233973485058894734}
   m_Layer: 8
   m_Name: Fish[1]
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -155,7 +155,7 @@ GameObject:
   - component: {fileID: 233905497899848632}
   m_Layer: 8
   m_Name: Fish[4]
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -174,7 +174,7 @@ GameObject:
   - component: {fileID: 233149356364141228}
   m_Layer: 8
   m_Name: Fish[5]
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -225,7 +225,7 @@ GameObject:
   - component: {fileID: 233284089989492778}
   m_Layer: 8
   m_Name: Fish[6]
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -952,6 +952,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1063ae8ff87c04c4f8c5eedcfa889d39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunfish: {fileID: 0}
   segment: {fileID: 120200071117427818}
   index: 7
   grounded: 0
@@ -985,6 +986,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1063ae8ff87c04c4f8c5eedcfa889d39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunfish: {fileID: 0}
   segment: {fileID: 120200071117427818}
   index: 6
   grounded: 0
@@ -1039,6 +1041,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1063ae8ff87c04c4f8c5eedcfa889d39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunfish: {fileID: 0}
   segment: {fileID: 120200071117427818}
   index: 1
   grounded: 0
@@ -1074,11 +1077,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentJumpCD: 0
   maxJumpCD: 1
+  currentAirborneJumpCD: 0
+  maxAirborneJumpCD: 0.4
   fire: 0
   currentFireCD: 0
   maxFireCD: 1
   rb: {fileID: 0}
   gun: {fileID: 0}
+  groundedCount: 0
   flops: []
   shots: []
 --- !u!114 &114302794705620292
@@ -1092,6 +1098,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1063ae8ff87c04c4f8c5eedcfa889d39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunfish: {fileID: 0}
   segment: {fileID: 120200071117427818}
   index: 3
   grounded: 0
@@ -1106,6 +1113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1063ae8ff87c04c4f8c5eedcfa889d39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunfish: {fileID: 0}
   segment: {fileID: 120200071117427818}
   index: 4
   grounded: 0
@@ -1139,6 +1147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1063ae8ff87c04c4f8c5eedcfa889d39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunfish: {fileID: 0}
   segment: {fileID: 120200071117427818}
   index: 8
   grounded: 0
@@ -1153,6 +1162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1063ae8ff87c04c4f8c5eedcfa889d39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunfish: {fileID: 0}
   segment: {fileID: 120200071117427818}
   index: 2
   grounded: 0
@@ -1186,6 +1196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1063ae8ff87c04c4f8c5eedcfa889d39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunfish: {fileID: 0}
   segment: {fileID: 120200071117427818}
   index: 9
   grounded: 0
@@ -1284,6 +1295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1063ae8ff87c04c4f8c5eedcfa889d39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunfish: {fileID: 0}
   segment: {fileID: 120200071117427818}
   index: 0
   grounded: 0
@@ -1298,6 +1310,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1063ae8ff87c04c4f8c5eedcfa889d39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunfish: {fileID: 0}
   segment: {fileID: 120200071117427818}
   index: 5
   grounded: 0
