@@ -54,15 +54,15 @@ public class ServerController : NetworkBehaviour {
                     targetHit = true;
 
                     //If it's a fish, ensure it's applied to the root
-                    Rigidbody2D target = null;
+                    GameObject target = null;
                     if (hit.transform.parent == null) {
-                        target = hit.transform.GetComponent<Rigidbody2D>();
+                        target = hit.transform.gameObject;
                     } else if (hit.transform.parent.CompareTag("Player")) {
-                        target = hit.transform.parent.GetComponent<Rigidbody2D>();
+                        target = hit.transform.parent.gameObject;
                     }
 
                     if (target != null) {
-                        NetworkServer.SendToClient(hit.transform.GetComponent<Gunfish>().connectionToClient.connectionId,
+                        NetworkServer.SendToClientOfPlayer(target,
                                                    MessageTypes.GUNSHOTHITMSG,
                                                    new GunshotHitMsg(direction * 200f, 1f, realHit.point)
                                                   );

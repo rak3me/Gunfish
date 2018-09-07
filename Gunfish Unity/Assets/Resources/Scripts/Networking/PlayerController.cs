@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 public class PlayerController : NetworkBehaviour {
 
     public GameObject gunshotDebris;
-    public AudioClip[] gunshotAudio = null;
+    public AudioClip[] gunshotAudio;
 
     //public override void OnStartLocalPlayer () {
     //    NetworkManager.singleton.client.RegisterHandler(MessageTypes.DEBUGLOGMSG, OnDebugLog);
@@ -19,9 +19,7 @@ public class PlayerController : NetworkBehaviour {
             gunshotDebris = Resources.Load<GameObject>("Prefabs/Debris");
         }
 
-        if (gunshotAudio == null) {
-            gunshotAudio = Resources.LoadAll<AudioClip>("Audio/Shots/");
-        }
+        gunshotAudio = Resources.LoadAll<AudioClip>("Audio/Shots/");
 
         //Debug.Log("ConnId: " + connectionToServer.connectionId);
 
