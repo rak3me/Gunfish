@@ -330,11 +330,13 @@
     <Compile Include="Assets\Resources\Scripts\Editor\GunfishGeneratorWindow.cs" />
     <Compile Include="Assets\Resources\Scripts\Editor\GunGeneratorWindow.cs" />
     <Compile Include="Assets\Resources\Scripts\Editor\NetworkTransformUtility.cs" />
+    <Compile Include="Assets\Smooth Sync\Smooth Sync Asset\Editor\SmoothSyncEditor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Fonts\copasetic\1001fonts-copasetic-eula.txt" />
     <None Include="Assets\Resources\Prefabs\Depricated\Sardine\ReadMe.txt" />
     <None Include="Assets\Resources\Prefabs\Depricated\TropicalFish_FBX\PolyCounts.txt" />
+    <None Include="Assets\Smooth Sync\Smooth Sync Asset\README.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
